@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { envValidationSchema } from './env-validation.schema';
-import { mysqlEnv, serverEnv } from './envs';
-import { MysqlDbConfigService } from './services';
+import { mysqlEnv, serverEnv, tokenEnv } from './envs';
+import { JwtConfigService, MysqlDbConfigService } from './services';
 
 @Module({
   imports: [
@@ -12,7 +13,7 @@ import { MysqlDbConfigService } from './services';
       isGlobal: true,
       envFilePath: `.env.${process.env.NODE_ENV}`,
       cache: true,
-      load: [serverEnv, mysqlEnv],
+      load: [mysqlEnv, serverEnv, tokenEnv],
       validationSchema: envValidationSchema,
       validationOptions: {
         abortEarly: true,
@@ -21,6 +22,10 @@ import { MysqlDbConfigService } from './services';
     TypeOrmModule.forRootAsync({
       useClass: MysqlDbConfigService,
       inject: [MysqlDbConfigService],
+    }),
+    JwtModule.registerAsync({
+      inject: [JwtConfigService],
+      useClass: JwtConfigService,
     }),
   ],
   providers: [MysqlDbConfigService],
