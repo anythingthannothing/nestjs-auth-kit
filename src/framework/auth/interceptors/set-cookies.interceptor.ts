@@ -8,7 +8,7 @@ import { Response } from 'express';
 import { map, Observable } from 'rxjs';
 
 import { authConst } from '../../shared';
-import { SignUpResDto } from '../controllers/sign-up/sign-up-res.dto';
+import { ISignUpResDto } from '../controllers/sign-up/i-sign-up-res.dto';
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -37,7 +37,7 @@ export class SetCookiesInterceptor implements NestInterceptor {
           accessToken,
           refreshToken,
           tokenExpiresInSeconds,
-        }: SignUpResDto) => {
+        }: ISignUpResDto) => {
           response.cookie('Authorization', accessToken, tokenCookieOptions);
           response.cookie(
             'RefreshToken',

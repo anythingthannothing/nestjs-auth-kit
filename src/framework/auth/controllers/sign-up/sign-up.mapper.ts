@@ -1,7 +1,7 @@
-import { SignUpReqDto } from './sign-up.req.dto';
+import { ISignUpReqDto } from './sign-up.req.dto';
 
 export const signUpMapper = {
-  mapToSignUpServiceInput: (dto: SignUpReqDto) => {
+  mapToSignUpServiceInput: (dto: ISignUpReqDto) => {
     return {};
   },
   mapToSignUpReqDto: (dto: any) => {

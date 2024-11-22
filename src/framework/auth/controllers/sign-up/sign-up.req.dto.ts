@@ -1,6 +1,6 @@
 import { tags } from 'typia';
 
-export interface SignUpReqDto {
+export interface ISignUpReqDto {
   email: string &
     tags.Pattern<'^(?=.{10,254}$)[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$'> &
     tags.MinLength<10> &
