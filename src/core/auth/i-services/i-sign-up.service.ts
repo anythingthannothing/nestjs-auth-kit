@@ -2,8 +2,10 @@ import { UserDomain } from '../../domain';
 import { CreateAccountRepositoryInput } from '../i-repositories';
 
 export class SignUpServiceInput {
-  email: string;
-  password: string;
+  constructor(
+    readonly email: string,
+    readonly password: string,
+  ) {}
 
   public mapToCreateAccountRepositoryInput(
     hashedPassword: string,

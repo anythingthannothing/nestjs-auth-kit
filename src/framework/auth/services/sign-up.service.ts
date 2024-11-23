@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { UserDomain } from 'src/core/domain';
 
 import {
@@ -8,14 +8,22 @@ import {
   ISignUpService,
   SignUpServiceInput,
 } from '../../../core';
+import { CheckDuplicateUserByEmailRepository } from '../../../infra/mysql';
+import { CreateAccountRepository } from '../../../infra/mysql/repositories/auth';
+import { Transactional } from '../../shared';
+import { HashProvider } from '../providers/hash.provider';
 
 @Injectable()
 export class SignUpService implements ISignUpService {
   constructor(
+    @Inject(CheckDuplicateUserByEmailRepository)
     private readonly checkDuplicateUserByEmailRepository: ICheckDuplicateUserByEmailRepository,
-    private readonly hashProvider: IHashProvider,
+    @Inject(HashProvider) private readonly hashProvider: IHashProvider,
+    @Inject(CreateAccountRepository)
     private readonly createAccountRepository: ICreateAccountRepository,
   ) {}
+
+  @Transactional()
   public async execute(dto: SignUpServiceInput): Promise<UserDomain> {
     const { email, password } = dto;
 
