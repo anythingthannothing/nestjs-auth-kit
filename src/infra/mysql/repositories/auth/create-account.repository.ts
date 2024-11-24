@@ -1,35 +1,37 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
+import { Inject, Injectable } from '@nestjs/common';
 import { AccountDomain } from 'src/core/domain';
-import { Repository } from 'typeorm';
+import { DataSource } from 'typeorm';
 
 import {
   CreateAccountRepositoryInput,
   ICreateAccountRepository,
+  IUnitOfWorkProvider,
 } from '../../../../core';
+import { UnitOfWorkProvider } from '../../../../framework/shared';
 import { AccountEntity, PasswordEntity, UserEntity } from '../../entities';
 
 @Injectable()
 export class CreateAccountRepository implements ICreateAccountRepository {
   constructor(
-    @InjectRepository(AccountEntity)
-    private readonly accountRepository: Repository<AccountEntity>,
-    @InjectRepository(UserEntity)
-    private readonly userRepository: Repository<UserEntity>,
-    @InjectRepository(PasswordEntity)
-    private readonly passwordRepository: Repository<PasswordEntity>,
+    @Inject(UnitOfWorkProvider)
+    private readonly unitOfWorkProvider: IUnitOfWorkProvider<DataSource>,
   ) {}
 
   public async execute({
     email,
     password,
   }: CreateAccountRepositoryInput): Promise<AccountDomain> {
-    const newAccount = this.accountRepository.create({ email });
+    const dataSource = this.unitOfWorkProvider.dataSource;
+    const newAccount = dataSource
+      .getRepository(AccountEntity)
+      .create({ email });
 
-    newAccount.user = this.userRepository.create();
-    newAccount.password = this.passwordRepository.create({ password });
+    newAccount.user = dataSource.getRepository(UserEntity).create();
+    newAccount.password = dataSource
+      .getRepository(PasswordEntity)
+      .create({ password });
 
-    await this.accountRepository.save(newAccount);
+    await dataSource.getRepository(AccountEntity).save(newAccount);
 
     return newAccount;
   }

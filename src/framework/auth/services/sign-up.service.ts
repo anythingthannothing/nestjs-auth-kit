@@ -24,7 +24,6 @@ export class SignUpService implements ISignUpService {
     private readonly createAccountRepository: ICreateAccountRepository,
   ) {}
 
-  // @Transactional()
   public async execute(dto: SignUpServiceInput): Promise<UserDomain> {
     const { email, password } = dto;
 
@@ -35,7 +34,6 @@ export class SignUpService implements ISignUpService {
     const newAccount = await this.createAccountRepository.execute(
       dto.mapToCreateAccountRepositoryInput(hashedPassword),
     );
-
     return newAccount.user;
   }
 }

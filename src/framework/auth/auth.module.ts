@@ -8,6 +8,7 @@ import {
   PasswordEntity,
   UserEntity,
 } from '../../infra/mysql';
+import { UnitOfWorkProvider } from '../shared';
 import { LoginController, SignUpController } from './controllers';
 import { HashProvider } from './providers/hash.provider';
 import { SignUpService } from './services/sign-up.service';
@@ -22,6 +23,7 @@ import { SignUpService } from './services/sign-up.service';
     HashProvider,
     CheckDuplicateAccountByEmailRepository,
     CreateAccountRepository,
+    UnitOfWorkProvider,
   ],
 })
 export class AuthModule {}
