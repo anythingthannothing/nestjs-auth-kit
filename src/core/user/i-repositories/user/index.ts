@@ -1,2 +1,2 @@
-export * from './i-check-duplicate-user-by-email.repository';
+export * from '../../../auth/i-repositories/i-check-duplicate-account-by-email.repository';
 export * from './i-get-user-by-email.repository';

@@ -2,6 +2,7 @@ import { TypedBody, TypedRoute } from '@nestia/core';
 import { Controller, Inject } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 
+import { ISignUpService } from '../../../../core';
 import { tokenEnv } from '../../../app-config/envs';
 import { authEndPointsConst } from '../../lib';
 import { SignUpService } from '../../services/sign-up.service';
@@ -15,7 +16,7 @@ export class SignUpController {
     @Inject(tokenEnv.KEY)
     private readonly tokenConfig: ConfigType<typeof tokenEnv>,
     @Inject(SignUpService)
-    private readonly signUpService: SignUpService,
+    private readonly signUpService: ISignUpService,
   ) {}
 
   @TypedRoute.Post(authEndPointsConst.signUp)

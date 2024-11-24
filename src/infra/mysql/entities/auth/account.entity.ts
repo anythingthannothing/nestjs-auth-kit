@@ -18,8 +18,8 @@ export class AccountEntity implements AccountDomain {
   @PrimaryGeneratedColumn({ type: 'int', unsigned: true })
   accountId: number;
 
-  @Column({ type: 'int', unsigned: true, nullable: false })
-  userId: number;
+  // @Column({ type: 'int', unsigned: true, nullable: false })
+  // userId: number;
 
   @OneToOne(() => UserEntity, { cascade: ['insert'] })
   @JoinColumn({ name: 'user_id' })

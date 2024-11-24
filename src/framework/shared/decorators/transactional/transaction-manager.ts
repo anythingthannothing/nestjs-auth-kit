@@ -1,22 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { getNamespace } from 'cls-hooked';
-import { EntityManager } from 'typeorm';
-
-import { namespaceKey } from './namespace-key';
-import { TypeOrmDatabase } from './type-orm-database';
+import { InjectDataSource } from '@nestjs/typeorm';
+import { DataSource, EntityManager } from 'typeorm';
 
 @Injectable()
 export class TransactionManager {
+  constructor(
+    @InjectDataSource()
+    private mysqlDatasource: DataSource,
+  ) {}
   getEntityManager(): EntityManager {
-    const namespace = getNamespace(namespaceKey.TRANSACTION);
-
-    if (!namespace || !namespace.active) {
-      throw new Error('Namespace is not active');
-    }
-
-    return (
-      namespace.get(namespaceKey.ENTITY_MANAGER) ||
-      TypeOrmDatabase.MysqlDataSource.createEntityManager()
-    );
+    return this.mysqlDatasource.createEntityManager();
   }
 }

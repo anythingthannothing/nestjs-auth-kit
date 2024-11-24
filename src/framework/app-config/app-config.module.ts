@@ -1,13 +1,13 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { TransactionManager } from '../shared/decorators/transactional/transaction-manager';
 import { TypeormTransactionMiddleware } from '../shared/decorators/transactional/transaction-middleware';
-import { TypeOrmDatabase } from '../shared/decorators/transactional/type-orm-database';
 import { envValidationSchema } from './env-validation.schema';
 import { mysqlEnv, serverEnv, tokenEnv } from './envs';
-import { JwtConfigService } from './services';
+import { JwtConfigService, MysqlDbConfigService } from './services';
 
 @Module({
   imports: [
@@ -21,12 +21,16 @@ import { JwtConfigService } from './services';
         abortEarly: true,
       },
     }),
+    TypeOrmModule.forRootAsync({
+      useClass: MysqlDbConfigService,
+      inject: [MysqlDbConfigService],
+    }),
     JwtModule.registerAsync({
       inject: [JwtConfigService],
       useClass: JwtConfigService,
     }),
   ],
-  providers: [TransactionManager, TypeOrmDatabase],
+  providers: [TransactionManager],
   exports: [TransactionManager],
 })
 export class AppConfigModule implements NestModule {

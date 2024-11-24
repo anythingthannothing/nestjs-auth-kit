@@ -1,8 +1,6 @@
 import { getNamespace } from 'cls-hooked';
-import { EntityManager } from 'typeorm';
 
 import { namespaceKey } from './namespace-key';
-import { TypeOrmDatabase } from './type-orm-database';
 
 export function Transactional() {
   return function (
@@ -20,22 +18,11 @@ export function Transactional() {
         throw new Error('Namespace is not active');
       }
 
-      let entityManager = namespace.get(namespaceKey.ENTITY_MANAGER);
+      const entityManager = namespace.get(namespaceKey.ENTITY_MANAGER)!;
 
-      if (!entityManager) {
-        entityManager = TypeOrmDatabase.MysqlDataSource.createEntityManager();
-        entityManager.transaction(
-          async (transactionalEntityManager: EntityManager) => {
-            namespace.set(
-              namespaceKey.ENTITY_MANAGER,
-              transactionalEntityManager,
-            );
-            result = await originalMethod.bind(target)(...args);
-          },
-        );
-      } else {
+      entityManager.transaction(async () => {
         result = await originalMethod.bind(target)(...args);
-      }
+      });
 
       return result;
     }

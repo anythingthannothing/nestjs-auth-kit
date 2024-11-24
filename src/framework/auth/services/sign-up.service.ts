@@ -2,32 +2,33 @@ import { Inject, Injectable } from '@nestjs/common';
 import { UserDomain } from 'src/core/domain';
 
 import {
-  ICheckDuplicateUserByEmailRepository,
+  ICheckDuplicateAccountByEmailRepository,
   ICreateAccountRepository,
   IHashProvider,
   ISignUpService,
   SignUpServiceInput,
 } from '../../../core';
-import { CheckDuplicateUserByEmailRepository } from '../../../infra/mysql';
-import { CreateAccountRepository } from '../../../infra/mysql/repositories/auth';
-import { Transactional } from '../../shared';
+import {
+  CheckDuplicateAccountByEmailRepository,
+  CreateAccountRepository,
+} from '../../../infra/mysql';
 import { HashProvider } from '../providers/hash.provider';
 
 @Injectable()
 export class SignUpService implements ISignUpService {
   constructor(
-    @Inject(CheckDuplicateUserByEmailRepository)
-    private readonly checkDuplicateUserByEmailRepository: ICheckDuplicateUserByEmailRepository,
+    @Inject(CheckDuplicateAccountByEmailRepository)
+    private readonly checkDuplicateAccountByEmailRepository: ICheckDuplicateAccountByEmailRepository,
     @Inject(HashProvider) private readonly hashProvider: IHashProvider,
     @Inject(CreateAccountRepository)
     private readonly createAccountRepository: ICreateAccountRepository,
   ) {}
 
-  @Transactional()
+  // @Transactional()
   public async execute(dto: SignUpServiceInput): Promise<UserDomain> {
     const { email, password } = dto;
 
-    await this.checkDuplicateUserByEmailRepository.execute(email);
+    await this.checkDuplicateAccountByEmailRepository.execute(email);
 
     const hashedPassword = await this.hashProvider.hash(password);
 

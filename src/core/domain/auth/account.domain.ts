@@ -4,7 +4,7 @@ import { PasswordDomain } from './password.domain';
 
 export interface AccountDomain {
   accountId: number;
-  userId: number;
+  // userId: number;
   user: UserDomain;
   email: string;
   deletedAt?: Date;

@@ -22,7 +22,7 @@ export class MysqlDbConfigService implements TypeOrmOptionsFactory {
       synchronize: this.serverConfig.env !== 'production',
       poolSize: this.mysqlConfig.poolSize,
       logging: this.serverConfig.env === 'development',
-      entities: ['dist/infra/mysql/**/*.entity.js'],
+      entities: ['dist/infra/mysql/entities/**/*.entity.js'],
       bigNumberStrings: true,
       supportBigNumbers: true,
     };

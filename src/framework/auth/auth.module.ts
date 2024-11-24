@@ -1,18 +1,26 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { CheckDuplicateUserByEmailRepository } from '../../infra/mysql';
-import { CreateAccountRepository } from '../../infra/mysql/repositories/auth';
+import {
+  AccountEntity,
+  CheckDuplicateAccountByEmailRepository,
+  CreateAccountRepository,
+  PasswordEntity,
+  UserEntity,
+} from '../../infra/mysql';
 import { LoginController, SignUpController } from './controllers';
 import { HashProvider } from './providers/hash.provider';
 import { SignUpService } from './services/sign-up.service';
 
 @Module({
-  imports: [],
+  imports: [
+    TypeOrmModule.forFeature([AccountEntity, UserEntity, PasswordEntity]),
+  ],
   controllers: [LoginController, SignUpController],
   providers: [
     SignUpService,
     HashProvider,
-    CheckDuplicateUserByEmailRepository,
+    CheckDuplicateAccountByEmailRepository,
     CreateAccountRepository,
   ],
 })
