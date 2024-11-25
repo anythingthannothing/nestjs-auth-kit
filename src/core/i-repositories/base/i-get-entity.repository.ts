@@ -1,3 +1,3 @@
 export interface IGetEntityRepository<P, E> {
-  execute(predicate: P): Promise<E>;
+  execute(predicate: P): Promise<E | null>;
 }

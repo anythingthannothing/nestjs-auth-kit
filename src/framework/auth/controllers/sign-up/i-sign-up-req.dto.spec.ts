@@ -1,12 +1,12 @@
 import { createAssert } from 'typia';
 
-import { SignUpReqDto } from './sign-up.req.dto';
+import { ISignUpReqDto } from './sign-up.req.dto';
 
 describe('SignUpReqDto Validation', () => {
-  const assert = createAssert<SignUpReqDto>();
+  const assert = createAssert<ISignUpReqDto>();
 
   it('should pass validation for valid email and password', () => {
-    const validData: SignUpReqDto = {
+    const validData: ISignUpReqDto = {
       email: 'test@example.com',
       password: 'password123',
     };
@@ -15,7 +15,7 @@ describe('SignUpReqDto Validation', () => {
   });
 
   it('should fail validation for invalid email', () => {
-    const invalidEmailData: SignUpReqDto = {
+    const invalidEmailData: ISignUpReqDto = {
       email: 'invalid_email',
       password: 'password123',
     };
@@ -24,7 +24,7 @@ describe('SignUpReqDto Validation', () => {
   });
 
   it('should fail validation for email that is too short', () => {
-    const shortEmailData: SignUpReqDto = {
+    const shortEmailData: ISignUpReqDto = {
       email: 'a@b.c',
       password: 'password123',
     };
@@ -33,7 +33,7 @@ describe('SignUpReqDto Validation', () => {
   });
 
   it('should fail validation for email that is too long', () => {
-    const longEmailData: SignUpReqDto = {
+    const longEmailData: ISignUpReqDto = {
       email: 'a'.repeat(300) + '@example.com',
       password: 'password123',
     };
@@ -42,7 +42,7 @@ describe('SignUpReqDto Validation', () => {
   });
 
   it('should fail validation for password that is too short', () => {
-    const shortPasswordData: SignUpReqDto = {
+    const shortPasswordData: ISignUpReqDto = {
       email: 'test@example.com',
       password: 'short',
     };
@@ -51,7 +51,7 @@ describe('SignUpReqDto Validation', () => {
   });
 
   it('should fail validation for password that is too long', () => {
-    const longPasswordData: SignUpReqDto = {
+    const longPasswordData: ISignUpReqDto = {
       email: 'test@example.com',
       password: 'a'.repeat(65),
     };
