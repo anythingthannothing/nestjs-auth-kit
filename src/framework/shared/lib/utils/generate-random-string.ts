@@ -1,6 +1,6 @@
 import { randomInt } from 'crypto';
 
-const defaultCharSet =
+export const defaultCharSet =
   'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
 export const generateRandomString = (
@@ -16,6 +16,6 @@ export const generateRandomString = (
 
   return Array.from(
     { length },
-    () => charSet[randomInt(Math.random() * charSet.length)],
+    () => charSet[randomInt(0, charSet.length)],
   ).join('');
 };
