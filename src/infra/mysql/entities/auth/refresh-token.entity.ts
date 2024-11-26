@@ -1,6 +1,7 @@
 import {
   Column,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   Unique,
@@ -25,9 +26,10 @@ export class RefreshTokenEntity implements RefreshTokenDomain {
   @Column({ name: 'token', type: 'char', length: 12 })
   token: string;
 
-  @Column({ name: 'expires_at', type: 'timestamp', nullable: false })
+  @Column({ name: 'expires_at', type: 'int', unsigned: true, nullable: false })
   expiresAt: number;
 
   @ManyToOne(() => UserEntity)
+  @JoinColumn({ name: 'user_id' })
   user: UserEntity;
 }

@@ -1,11 +1,17 @@
-import { TypedBody, TypedRoute } from '@nestia/core';
-import { Controller, Inject } from '@nestjs/common';
+import { TypedBody } from '@nestia/core';
+import { Controller, Inject, Post, UseInterceptors } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 
-import { ISignUpService } from '../../../../core';
+import {
+  IJwtTokenProvider,
+  IRefreshTokenProvider,
+  ISignUpService,
+} from '../../../../core';
 import { tokenEnv } from '../../../app-config/envs';
+import { SetCookiesInterceptor } from '../../interceptors';
 import { authEndPointsConst } from '../../lib';
-import { SignUpService } from '../../services/sign-up.service';
+import { JwtTokenProvider, RefreshTokenProvider } from '../../providers';
+import { SignUpService } from '../../services';
 import { ISignUpResDto } from './i-sign-up-res.dto';
 import { signUpMapper } from './sign-up.mapper';
 import { ISignUpReqDto } from './sign-up.req.dto';
@@ -17,18 +23,36 @@ export class SignUpController {
     private readonly tokenConfig: ConfigType<typeof tokenEnv>,
     @Inject(SignUpService)
     private readonly signUpService: ISignUpService,
+    @Inject(JwtTokenProvider)
+    private readonly jwtTokenProvider: IJwtTokenProvider,
+    @Inject(RefreshTokenProvider)
+    private readonly refreshTokenProvider: IRefreshTokenProvider,
   ) {}
 
-  @TypedRoute.Post(authEndPointsConst.signUp)
-  async execute(@TypedBody() body: ISignUpReqDto): Promise<ISignUpResDto> {
+  @Post(authEndPointsConst.signUp)
+  @UseInterceptors(SetCookiesInterceptor)
+  public async execute(
+    @TypedBody() body: ISignUpReqDto,
+  ): Promise<ISignUpResDto> {
     const user = await this.signUpService.execute(
       signUpMapper.mapToSignUpServiceInput(body),
     );
 
+    const accessTokenPromise = this.jwtTokenProvider.sign({
+      userId: user.userId,
+    });
+
+    const refreshTokenPromise = this.refreshTokenProvider.generate(user.userId);
+
+    const [accessToken, refreshToken] = await Promise.all([
+      accessTokenPromise,
+      refreshTokenPromise,
+    ]);
+
     return {
-      accessToken: '',
+      accessToken,
+      refreshToken,
       tokenExpiresInSeconds: this.tokenConfig.jwtExpiresInSeconds,
-      refreshToken: '',
     };
   }
 }

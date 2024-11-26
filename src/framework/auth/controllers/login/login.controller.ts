@@ -1,5 +1,5 @@
-import { TypedBody, TypedRoute } from '@nestia/core';
-import { Controller, HttpCode } from '@nestjs/common';
+import { TypedBody } from '@nestia/core';
+import { Controller, HttpCode, Post } from '@nestjs/common';
 
 import { authEndPointsConst } from '../../lib';
 
@@ -7,7 +7,7 @@ import { authEndPointsConst } from '../../lib';
 export class LoginController {
   constructor() {}
 
-  @TypedRoute.Post(authEndPointsConst.login)
+  @Post(authEndPointsConst.login)
   @HttpCode(200)
   public async execute(@TypedBody() body) {
     console.log(body);

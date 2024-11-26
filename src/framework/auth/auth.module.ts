@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
+import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import {
@@ -14,12 +14,15 @@ import {
   CreateRefreshTokenRepository,
   GetRefreshTokenRepository,
 } from '../../infra/mysql/repositories/refresh-token';
+import { JwtConfigService } from '../app-config/services';
 import { UnitOfWorkProvider } from '../shared';
 import { LoginController, SignUpController } from './controllers';
-import { HashProvider } from './providers/hash.provider';
-import { JwtTokenProvider } from './providers/jwt-token.provider';
-import { RefreshTokenProvider } from './providers/refresh-token.provider';
-import { SignUpService } from './services/sign-up.service';
+import {
+  HashProvider,
+  JwtTokenProvider,
+  RefreshTokenProvider,
+} from './providers';
+import { SignUpService } from './services';
 
 @Module({
   imports: [
@@ -29,6 +32,10 @@ import { SignUpService } from './services/sign-up.service';
       PasswordEntity,
       RefreshTokenEntity,
     ]),
+    JwtModule.registerAsync({
+      inject: [JwtConfigService],
+      useClass: JwtConfigService,
+    }),
   ],
   controllers: [LoginController, SignUpController],
   providers: [
@@ -39,7 +46,6 @@ import { SignUpService } from './services/sign-up.service';
     UnitOfWorkProvider,
     JwtTokenProvider,
     RefreshTokenProvider,
-    JwtService,
     CreateRefreshTokenRepository,
     GetRefreshTokenRepository,
   ],

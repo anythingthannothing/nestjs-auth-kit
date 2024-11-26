@@ -39,11 +39,7 @@ export class SetCookiesInterceptor implements NestInterceptor {
           tokenExpiresInSeconds,
         }: ISignUpResDto) => {
           response.cookie('Authorization', accessToken, tokenCookieOptions);
-          response.cookie(
-            'RefreshToken',
-            refreshToken.toString(),
-            tokenCookieOptions,
-          );
+          response.cookie('RefreshToken', refreshToken, tokenCookieOptions);
           return { tokenExpiresInSeconds };
         },
       ),
