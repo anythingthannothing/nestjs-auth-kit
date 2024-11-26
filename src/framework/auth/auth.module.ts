@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { APP_GUARD } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
@@ -16,6 +17,7 @@ import {
 import { JwtConfigService } from '../app-config/services';
 import { UnitOfWorkProvider } from '../shared';
 import { LoginController, SignUpController } from './controllers';
+import { AccessTokenGuard } from './guards';
 import {
   HashProvider,
   JwtTokenProvider,
@@ -56,6 +58,11 @@ const repositories = [
     }),
   ],
   controllers: [...controllers],
-  providers: [...providers, ...services, ...repositories],
+  providers: [
+    { provide: APP_GUARD, useClass: AccessTokenGuard },
+    ...providers,
+    ...services,
+    ...repositories,
+  ],
 })
 export class AuthModule {}

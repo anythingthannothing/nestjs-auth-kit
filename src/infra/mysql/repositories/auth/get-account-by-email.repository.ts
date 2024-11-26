@@ -15,12 +15,12 @@ export class GetAccountByEmailRepository
     private readonly accountRepository: Repository<AccountEntity>,
   ) {}
   public async execute(email: string): Promise<AccountDomain | null> {
-    return this.accountRepository.findOne({
-      relations: {
-        user: true,
-        password: true,
-      },
-      where: { email },
-    });
+    return this.accountRepository
+      .createQueryBuilder('account')
+      .innerJoinAndSelect('account.user', 'user')
+      .innerJoinAndSelect('account.password', 'password')
+      .where('account.email = :email', { email })
+      .andWhere('account.deleted_at IS NULL')
+      .getOne();
   }
 }

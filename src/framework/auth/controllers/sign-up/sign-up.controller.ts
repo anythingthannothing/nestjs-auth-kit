@@ -8,6 +8,7 @@ import {
   ISignUpService,
 } from '../../../../core';
 import { tokenEnv } from '../../../app-config/envs';
+import { Public } from '../../../shared';
 import { SetCookiesInterceptor } from '../../interceptors';
 import { authEndPointsConst } from '../../lib';
 import { JwtTokenProvider, RefreshTokenProvider } from '../../providers';
@@ -29,6 +30,7 @@ export class SignUpController {
     private readonly refreshTokenProvider: IRefreshTokenProvider,
   ) {}
 
+  @Public()
   @Post(authEndPointsConst.signUp)
   @UseInterceptors(SetCookiesInterceptor)
   public async execute(

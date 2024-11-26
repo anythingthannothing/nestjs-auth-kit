@@ -14,6 +14,7 @@ import {
   IRefreshTokenProvider,
 } from '../../../../core';
 import { tokenEnv } from '../../../app-config/envs';
+import { Public } from '../../../shared';
 import { SetCookiesInterceptor } from '../../interceptors';
 import { authEndPointsConst } from '../../lib';
 import { JwtTokenProvider, RefreshTokenProvider } from '../../providers';
@@ -33,6 +34,7 @@ export class LoginController {
     private readonly refreshTokenProvider: IRefreshTokenProvider,
   ) {}
 
+  @Public()
   @Post(authEndPointsConst.login)
   @UseInterceptors(SetCookiesInterceptor)
   @HttpCode(200)

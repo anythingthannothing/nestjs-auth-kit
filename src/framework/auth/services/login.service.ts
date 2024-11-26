@@ -13,12 +13,12 @@ export class LoginService implements ILoginService {
     private readonly getAccountByEmailRepository: IGetAccountByEmailRepository,
     @Inject(HashProvider) private readonly hashProvider: IHashProvider,
   ) {}
+
   public async execute({
     email,
     password,
   }: LoginServiceInput): Promise<UserDomain> {
     const account = await this.getAccountByEmailRepository.execute(email);
-    console.log(account);
 
     if (
       !account ||
