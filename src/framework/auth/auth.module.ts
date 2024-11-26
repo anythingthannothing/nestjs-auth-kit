@@ -6,14 +6,13 @@ import {
   AccountEntity,
   CheckDuplicateAccountByEmailRepository,
   CreateAccountRepository,
+  CreateRefreshTokenRepository,
+  GetAccountByEmailRepository,
+  GetRefreshTokenRepository,
   PasswordEntity,
   RefreshTokenEntity,
   UserEntity,
 } from '../../infra/mysql';
-import {
-  CreateRefreshTokenRepository,
-  GetRefreshTokenRepository,
-} from '../../infra/mysql/repositories/refresh-token';
 import { JwtConfigService } from '../app-config/services';
 import { UnitOfWorkProvider } from '../shared';
 import { LoginController, SignUpController } from './controllers';
@@ -22,7 +21,26 @@ import {
   JwtTokenProvider,
   RefreshTokenProvider,
 } from './providers';
-import { SignUpService } from './services';
+import { LoginService, SignUpService } from './services';
+
+const controllers = [LoginController, SignUpController];
+
+const providers = [
+  HashProvider,
+  JwtTokenProvider,
+  UnitOfWorkProvider,
+  RefreshTokenProvider,
+];
+
+const services = [LoginService, SignUpService];
+
+const repositories = [
+  CheckDuplicateAccountByEmailRepository,
+  CreateAccountRepository,
+  CreateRefreshTokenRepository,
+  GetRefreshTokenRepository,
+  GetAccountByEmailRepository,
+];
 
 @Module({
   imports: [
@@ -37,17 +55,7 @@ import { SignUpService } from './services';
       useClass: JwtConfigService,
     }),
   ],
-  controllers: [LoginController, SignUpController],
-  providers: [
-    SignUpService,
-    HashProvider,
-    CheckDuplicateAccountByEmailRepository,
-    CreateAccountRepository,
-    UnitOfWorkProvider,
-    JwtTokenProvider,
-    RefreshTokenProvider,
-    CreateRefreshTokenRepository,
-    GetRefreshTokenRepository,
-  ],
+  controllers: [...controllers],
+  providers: [...providers, ...services, ...repositories],
 })
 export class AuthModule {}

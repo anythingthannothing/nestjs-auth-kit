@@ -52,7 +52,8 @@ export class SignUpController {
     return {
       accessToken,
       refreshToken,
-      tokenExpiresInSeconds: this.tokenConfig.jwtExpiresInSeconds,
+      tokenExpiresInSeconds:
+        Math.floor(Date.now() / 1000) + this.tokenConfig.jwtExpiresInSeconds,
     };
   }
 }
