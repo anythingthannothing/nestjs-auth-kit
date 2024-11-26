@@ -16,6 +16,7 @@ import {
 } from '../../infra/mysql';
 import { JwtConfigService } from '../app-config/services';
 import { UnitOfWorkProvider } from '../shared';
+import { DbContextProvider } from '../shared/providers/db-context.provider';
 import { LoginController, SignUpController } from './controllers';
 import { AccessTokenGuard } from './guards';
 import {
@@ -60,6 +61,7 @@ const repositories = [
   controllers: [...controllers],
   providers: [
     { provide: APP_GUARD, useClass: AccessTokenGuard },
+    DbContextProvider,
     ...providers,
     ...services,
     ...repositories,
