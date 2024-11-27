@@ -1,33 +1,35 @@
-import { TypedBody } from '@nestia/core';
 import {
   Controller,
-  HttpCode,
   Inject,
   Post,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 
 import {
   IJwtTokenProvider,
-  ILoginService,
+  IOauthLoginService,
   IRefreshTokenProvider,
 } from '../../../../core';
 import { tokenEnv } from '../../../app-config/envs';
 import { Public } from '../../../shared';
+import { GoogleUser } from '../../decorators';
+import { GoogleGuard, GoogleUserInfo } from '../../guards';
 import { SetCookiesInterceptor } from '../../interceptors';
 import { authEndPointsConst } from '../../lib';
 import { JwtTokenProvider, RefreshTokenProvider } from '../../providers';
-import { LoginService } from '../../services';
-import { ILoginReqDto } from './login.req.dto';
-import { ILoginResDto } from './login.res.dto';
+import { GoogleLoginService } from '../../services';
+import { ILoginResDto } from '../login/login.res.dto';
+import { googleLoginMapper } from './google-login.mapper';
 
 @Controller()
-export class LoginController {
+export class GoogleLoginController {
   constructor(
     @Inject(tokenEnv.KEY)
     private readonly tokenConfig: ConfigType<typeof tokenEnv>,
-    @Inject(LoginService) private readonly loginService: ILoginService,
+    @Inject(GoogleLoginService)
+    private readonly googleLoginService: IOauthLoginService,
     @Inject(JwtTokenProvider)
     private readonly jwtTokenProvider: IJwtTokenProvider,
     @Inject(RefreshTokenProvider)
@@ -35,11 +37,15 @@ export class LoginController {
   ) {}
 
   @Public()
-  @Post(authEndPointsConst.LOGIN)
+  @Post(authEndPointsConst.GOOGLE_LOGIN)
+  @UseGuards(GoogleGuard)
   @UseInterceptors(SetCookiesInterceptor)
-  @HttpCode(200)
-  public async execute(@TypedBody() body: ILoginReqDto): Promise<ILoginResDto> {
-    const user = await this.loginService.execute(body);
+  async execute(
+    @GoogleUser() googleUserInfo: GoogleUserInfo,
+  ): Promise<ILoginResDto> {
+    const user = await this.googleLoginService.execute(
+      googleLoginMapper.mapToOauthLoginServiceInput(googleUserInfo),
+    );
 
     const accessTokenPromise = this.jwtTokenProvider.sign({
       userId: user.userId,

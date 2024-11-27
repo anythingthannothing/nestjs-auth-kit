@@ -1,6 +1,6 @@
 import { registerAs } from '@nestjs/config';
 
-export default registerAs('auth', () => ({
+export default registerAs('token', () => ({
   jwtSecret: process.env.JWT_SECRET,
   jwtExpiresInSeconds: +(process.env.JWT_EXPIRES_IN_SECONDS as string),
   refreshTokenLength: +(process.env.REFRESH_TOKEN_LENGTH as string),

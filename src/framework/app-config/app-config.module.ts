@@ -4,7 +4,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { envValidationSchema } from './env-validation.schema';
-import { mysqlEnv, serverEnv, tokenEnv } from './envs';
+import { googleOauthEnv, mysqlEnv, serverEnv, tokenEnv } from './envs';
 import { JwtConfigService, MysqlDbConfigService } from './services';
 
 @Module({
@@ -13,7 +13,7 @@ import { JwtConfigService, MysqlDbConfigService } from './services';
       isGlobal: true,
       envFilePath: `.env.${process.env.NODE_ENV}`,
       cache: true,
-      load: [mysqlEnv, serverEnv, tokenEnv],
+      load: [googleOauthEnv, mysqlEnv, serverEnv, tokenEnv],
       validationSchema: envValidationSchema,
       validationOptions: {
         abortEarly: true,

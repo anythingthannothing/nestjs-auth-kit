@@ -1,13 +1,13 @@
 import { AccountDomain } from './account.domain';
 
-export enum oauthProviderEnum {
+export enum OauthProviderEnum {
   google = 'google',
   apple = 'apple',
 }
 
 export interface OauthProviderDomain {
-  oauthProviderType: oauthProviderEnum;
-  oauthProviderId: bigint;
+  oauthProviderType: OauthProviderEnum;
+  oauthProviderId: string;
   accountId: number;
   account: AccountDomain;
 }

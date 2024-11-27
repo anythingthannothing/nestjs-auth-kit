@@ -31,7 +31,7 @@ export class SignUpController {
   ) {}
 
   @Public()
-  @Post(authEndPointsConst.signUp)
+  @Post(authEndPointsConst.SIGN_UP)
   @UseInterceptors(SetCookiesInterceptor)
   public async execute(
     @TypedBody() body: ISignUpReqDto,

@@ -7,26 +7,31 @@ import {
   AccountEntity,
   CheckDuplicateAccountByEmailRepository,
   CreateAccountRepository,
+  CreateOauthAccountRepository,
   CreateRefreshTokenRepository,
   GetAccountByEmailRepository,
+  GetOauthAccountByEmailRepository,
   GetRefreshTokenRepository,
   PasswordEntity,
   RefreshTokenEntity,
   UserEntity,
 } from '../../infra/mysql';
 import { JwtConfigService } from '../app-config/services';
-import { UnitOfWorkProvider } from '../shared';
-import { DbContextProvider } from '../shared/providers/db-context.provider';
-import { LoginController, SignUpController } from './controllers';
+import { DbContextProvider, UnitOfWorkProvider } from '../shared';
+import {
+  GoogleLoginController,
+  LoginController,
+  SignUpController,
+} from './controllers';
 import { AccessTokenGuard } from './guards';
 import {
   HashProvider,
   JwtTokenProvider,
   RefreshTokenProvider,
 } from './providers';
-import { LoginService, SignUpService } from './services';
+import { GoogleLoginService, LoginService, SignUpService } from './services';
 
-const controllers = [LoginController, SignUpController];
+const controllers = [LoginController, SignUpController, GoogleLoginController];
 
 const providers = [
   HashProvider,
@@ -35,7 +40,7 @@ const providers = [
   RefreshTokenProvider,
 ];
 
-const services = [LoginService, SignUpService];
+const services = [LoginService, SignUpService, GoogleLoginService];
 
 const repositories = [
   CheckDuplicateAccountByEmailRepository,
@@ -43,6 +48,8 @@ const repositories = [
   CreateRefreshTokenRepository,
   GetRefreshTokenRepository,
   GetAccountByEmailRepository,
+  GetOauthAccountByEmailRepository,
+  CreateOauthAccountRepository,
 ];
 
 @Module({

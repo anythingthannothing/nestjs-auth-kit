@@ -2,7 +2,7 @@ import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
 
 import {
   OauthProviderDomain,
-  oauthProviderEnum,
+  OauthProviderEnum,
 } from '../../../../core/domain';
 import { AccountEntity } from './account.entity';
 
@@ -11,12 +11,12 @@ export class OauthProviderEntity implements OauthProviderDomain {
   @PrimaryColumn({
     name: 'oauth_provider_type',
     type: 'enum',
-    enum: oauthProviderEnum,
+    enum: OauthProviderEnum,
   })
-  oauthProviderType: oauthProviderEnum;
+  oauthProviderType: OauthProviderEnum;
 
   @PrimaryColumn({ name: 'oauth_provider_id', type: 'bigint', unsigned: true })
-  oauthProviderId: bigint;
+  oauthProviderId: string;
 
   @Column({ name: 'account_id', type: 'int', unsigned: true, nullable: false })
   accountId: number;

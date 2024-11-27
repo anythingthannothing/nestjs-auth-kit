@@ -1,6 +1,6 @@
 import { registerAs } from '@nestjs/config';
 
-export default registerAs('mysqlEnv', () => ({
+export default registerAs('mysql', () => ({
   host: process.env.MYSQL_HOST,
   port: +(process.env.MYSQL_PORT as string),
   username: process.env.MYSQL_USER,
