@@ -1,9 +1,6 @@
-import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
 
-import {
-  OauthProviderDomain,
-  OauthProviderEnum,
-} from '../../../../core/domain';
+import { OauthProviderDomain, OauthProviderEnum } from '../../../../core';
 import { AccountEntity } from './account.entity';
 
 @Entity('oauth_provider')
@@ -22,5 +19,6 @@ export class OauthProviderEntity implements OauthProviderDomain {
   accountId: number;
 
   @ManyToOne(() => AccountEntity, (account) => account.oauthProviders)
+  @JoinColumn({ name: 'account_id' })
   account: AccountEntity;
 }

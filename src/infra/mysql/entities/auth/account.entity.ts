@@ -8,14 +8,14 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import { AccountDomain } from '../../../../core/domain';
+import { AccountDomain } from '../../../../core';
 import { UserEntity } from '../user';
 import { OauthProviderEntity } from './oauth-provider.entity';
 import { PasswordEntity } from './password.entity';
 
 @Entity({ name: 'account' })
 export class AccountEntity implements AccountDomain {
-  @PrimaryGeneratedColumn({ type: 'int', unsigned: true })
+  @PrimaryGeneratedColumn({ name: 'account_id', type: 'int', unsigned: true })
   accountId: number;
 
   @OneToOne(() => UserEntity, { cascade: ['insert'] })

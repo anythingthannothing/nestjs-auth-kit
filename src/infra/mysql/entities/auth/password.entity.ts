@@ -7,7 +7,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-import { PasswordDomain } from '../../../../core/domain';
+import { PasswordDomain } from '../../../../core';
 import { AccountEntity } from './account.entity';
 
 @Entity('password')
