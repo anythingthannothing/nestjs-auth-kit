@@ -1,15 +1,22 @@
 import { ConfigType } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
-import { ISignUpService } from 'src/core';
+import {
+  IJwtTokenProvider,
+  IRefreshTokenProvider,
+  ISignUpService,
+} from 'src/core';
 
 import { tokenEnv } from '../../../app-config/envs';
-import { SignUpService } from '../../services/sign-up.service';
+import { JwtTokenProvider, RefreshTokenProvider } from '../../providers';
+import { SignUpService } from '../../services';
 import { SignUpController } from './sign-up.controller';
 
 describe('SignUpController', () => {
   let signUpController: SignUpController;
   let tokenConfigMock: ConfigType<typeof tokenEnv>;
   let signUpServiceMock: ISignUpService;
+  let jwtProviderMock: IJwtTokenProvider;
+  let refreshTokenProviderMock: IRefreshTokenProvider;
 
   beforeAll(async () => {
     tokenConfigMock = { jwtExpiresInSeconds: 3600 } as ConfigType<
@@ -22,6 +29,8 @@ describe('SignUpController', () => {
       providers: [
         { provide: tokenEnv.KEY, useValue: tokenConfigMock },
         { provide: SignUpService, useValue: signUpServiceMock },
+        { provide: JwtTokenProvider, useValue: jwtProviderMock },
+        { provide: RefreshTokenProvider, useValue: refreshTokenProviderMock },
       ],
     }).compile();
 
