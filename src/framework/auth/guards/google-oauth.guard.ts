@@ -10,7 +10,6 @@ import { OAuth2Client, TokenPayload } from 'google-auth-library';
 import { LoginTicket } from 'google-auth-library/build/src/auth/loginticket';
 
 import { googleOauthEnv } from '../../app-config/envs';
-import { authConst } from '../../shared';
 import { oauthConst } from '../lib';
 
 const oauthClient = new OAuth2Client();
@@ -24,15 +23,10 @@ export class GoogleGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request: Request = context.switchToHttp().getRequest();
-    const platform = request.headers[authConst.X_PLATFORM_KEY];
+    // const platform = request.headers[authConst.X_PLATFORM_KEY];
 
     const { credential } = request.body;
-    const audience =
-      platform === 'android'
-        ? this.googleOauthConfig.androidGoogleClientId
-        : platform === 'ios'
-          ? this.googleOauthConfig.iosGoogleClientId
-          : this.googleOauthConfig.webGoogleClientId;
+    const audience = this.googleOauthConfig.googleClientId;
 
     let ticket: LoginTicket;
 

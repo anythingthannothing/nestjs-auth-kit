@@ -6,9 +6,11 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
+import { Request } from 'express';
 
 import { IJwtTokenProvider } from '../../../core';
 import { authConst } from '../../shared';
+import { checkIsApp } from '../../shared/lib/utils/check-is-app';
 import { JwtTokenProvider } from '../providers';
 
 @Injectable()
@@ -28,9 +30,11 @@ export class AccessTokenGuard implements CanActivate {
       return true;
     }
 
-    const request = context.switchToHttp().getRequest();
+    const request = context.switchToHttp().getRequest() as Request;
 
-    const token = request.headers.authorization;
+    const token = checkIsApp(request[authConst.X_PLATFORM_KEY])
+      ? request.headers.authorization
+      : request.cookies[authConst.AUTHORIZATION_KEY];
 
     if (!token) {
       throw new UnauthorizedException();

@@ -21,6 +21,7 @@ import { DbContextProvider, UnitOfWorkProvider } from '../shared';
 import {
   GoogleLoginController,
   LoginController,
+  LogoutController,
   SignUpController,
 } from './controllers';
 import { AccessTokenGuard } from './guards';
@@ -31,12 +32,18 @@ import {
 } from './providers';
 import { GoogleLoginService, LoginService, SignUpService } from './services';
 
-const controllers = [LoginController, SignUpController, GoogleLoginController];
+const controllers = [
+  LoginController,
+  SignUpController,
+  GoogleLoginController,
+  LogoutController,
+];
 
 const providers = [
   HashProvider,
   JwtTokenProvider,
   UnitOfWorkProvider,
+  DbContextProvider,
   RefreshTokenProvider,
 ];
 
@@ -68,7 +75,6 @@ const repositories = [
   controllers: [...controllers],
   providers: [
     { provide: APP_GUARD, useClass: AccessTokenGuard },
-    DbContextProvider,
     ...providers,
     ...services,
     ...repositories,
