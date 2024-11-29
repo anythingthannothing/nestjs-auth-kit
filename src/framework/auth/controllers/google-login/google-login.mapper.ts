@@ -1,5 +1,5 @@
 import { OauthLoginServiceInput } from '../../../../core';
-import { OauthProviderEnum } from '../../../../core/domain';
+import { OauthProviderEnum } from '../../../../core';
 import { GoogleUserInfo } from '../../guards';
 
 export const googleLoginMapper = {

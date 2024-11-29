@@ -13,9 +13,9 @@ import { SetCookiesInterceptor } from '../../interceptors';
 import { authEndPointsConst } from '../../lib';
 import { JwtTokenProvider, RefreshTokenProvider } from '../../providers';
 import { SignUpService } from '../../services';
+import { ISignUpReqDto } from './i-sign-up.req.dto';
 import { ISignUpResDto } from './i-sign-up-res.dto';
 import { signUpMapper } from './sign-up.mapper';
-import { ISignUpReqDto } from './sign-up.req.dto';
 
 @Controller()
 export class SignUpController {

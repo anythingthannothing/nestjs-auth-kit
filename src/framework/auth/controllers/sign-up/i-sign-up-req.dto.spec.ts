@@ -1,6 +1,6 @@
 import { createAssert } from 'typia';
 
-import { ISignUpReqDto } from './sign-up.req.dto';
+import { ISignUpReqDto } from './i-sign-up.req.dto';
 
 describe('SignUpReqDto Validation', () => {
   const assert = createAssert<ISignUpReqDto>();

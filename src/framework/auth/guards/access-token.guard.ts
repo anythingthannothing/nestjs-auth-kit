@@ -11,6 +11,7 @@ import { Request } from 'express';
 import { IJwtTokenProvider } from '../../../core';
 import { authConst } from '../../shared';
 import { checkIsApp } from '../../shared/lib/utils/check-is-app';
+import { PlatformType } from '../../shared/types';
 import { JwtTokenProvider } from '../providers';
 
 @Injectable()
@@ -32,7 +33,9 @@ export class AccessTokenGuard implements CanActivate {
 
     const request = context.switchToHttp().getRequest() as Request;
 
-    const token = checkIsApp(request[authConst.X_PLATFORM_KEY])
+    const token = checkIsApp(
+      request.headers[authConst.X_PLATFORM_KEY] as PlatformType,
+    )
       ? request.headers.authorization
       : request.cookies[authConst.AUTHORIZATION_KEY];
 
