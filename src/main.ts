@@ -3,16 +3,22 @@ import { NestFactory } from '@nestjs/core';
 
 import { AppModule } from './framework/app.module';
 import { initApiDocsModule } from './framework/app-config/init-api-docs-module';
+import { throwIfInvalidUrl } from './framework/shared';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   const configService = app.get(ConfigService);
 
-  app.enableCors({
-    origin: [configService.get<string>('CORS_ORIGIN')!],
-    credentials: true,
-  });
+  const corsOrigins = (
+    configService.get<string>('CORS_ORIGINS') as string
+  ).split(',');
+
+  for (const corsOrigin of corsOrigins) {
+    throwIfInvalidUrl(corsOrigin);
+  }
+
+  app.enableCors({ origin: corsOrigins, credentials: true });
 
   const port = +(configService.get<string>('PORT') as string);
 

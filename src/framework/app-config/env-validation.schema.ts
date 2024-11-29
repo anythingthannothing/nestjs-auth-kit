@@ -2,7 +2,7 @@ import * as Joi from 'joi';
 
 export const envValidationSchema = Joi.object({
   PORT: Joi.number().integer().required(),
-  CORS_ORIGIN: Joi.string().required(),
+  CORS_ORIGINS: Joi.string().required(),
   JWT_SECRET: Joi.string().required(),
   JWT_EXPIRES_IN_SECONDS: Joi.number().required(),
   REFRESH_TOKEN_LENGTH: Joi.number().required(),
