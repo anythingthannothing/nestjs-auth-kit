@@ -10,7 +10,7 @@ import {
 import {
   CreateRefreshTokenRepository,
   GetRefreshTokenRepository,
-} from '../../../infra/mysql/repositories/refresh-token';
+} from '../../../infra/mysql';
 import { tokenEnv } from '../../app-config/envs';
 import { generateRandomString } from '../../shared';
 

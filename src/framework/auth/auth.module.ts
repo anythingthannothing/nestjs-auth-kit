@@ -31,6 +31,7 @@ import {
   RefreshTokenProvider,
 } from './providers';
 import { GoogleLoginService, LoginService, SignUpService } from './services';
+import { RefreshTokenController } from './controllers/refresh-token/refresh-token.controller';
 
 const controllers = [
   LoginController,
@@ -72,7 +73,7 @@ const repositories = [
       useClass: JwtConfigService,
     }),
   ],
-  controllers: [...controllers],
+  controllers: [...controllers, RefreshTokenController],
   providers: [
     { provide: APP_GUARD, useClass: AccessTokenGuard },
     ...providers,

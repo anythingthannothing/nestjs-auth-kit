@@ -12,7 +12,11 @@ export class OauthProviderEntity implements OauthProviderDomain {
   })
   oauthProviderType: OauthProviderEnum;
 
-  @PrimaryColumn({ name: 'oauth_provider_id', type: 'bigint', unsigned: true })
+  @PrimaryColumn({
+    name: 'oauth_provider_id',
+    type: 'varchar',
+    length: 255,
+  })
   oauthProviderId: string;
 
   @Column({ name: 'account_id', type: 'int', unsigned: true, nullable: false })

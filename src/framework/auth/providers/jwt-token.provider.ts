@@ -3,7 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 
 import { IJwtTokenProvider } from '../../../core';
 
-interface JwtPayload {
+export interface JwtPayload {
   userId: number;
   iat: number;
   exp: number;

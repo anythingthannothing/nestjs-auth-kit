@@ -2,6 +2,7 @@ import { TypedBody } from '@nestia/core';
 import {
   Controller,
   HttpCode,
+  HttpStatus,
   Inject,
   Post,
   UseInterceptors,
@@ -37,7 +38,7 @@ export class LoginController {
   @Public()
   @Post(authEndPointsConst.LOGIN)
   @UseInterceptors(SetCookiesInterceptor)
-  @HttpCode(200)
+  @HttpCode(HttpStatus.OK)
   public async execute(@TypedBody() body: ILoginReqDto): Promise<ILoginResDto> {
     const user = await this.loginService.execute(body);
 

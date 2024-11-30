@@ -1,5 +1,7 @@
 import {
   Controller,
+  HttpCode,
+  HttpStatus,
   Inject,
   Post,
   UseGuards,
@@ -38,6 +40,7 @@ export class GoogleLoginController {
 
   @Public()
   @Post(authEndPointsConst.GOOGLE_LOGIN)
+  @HttpCode(HttpStatus.OK)
   @UseGuards(GoogleGuard)
   @UseInterceptors(SetCookiesInterceptor)
   async execute(

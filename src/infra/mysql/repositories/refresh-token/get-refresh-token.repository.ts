@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { LessThan, Repository } from 'typeorm';
+import { MoreThan, Repository } from 'typeorm';
 
 import {
   GetRefreshTokenRepositoryInput,
   IGetRefreshTokenRepository,
+  RefreshTokenDomain,
 } from '../../../../core';
-import { RefreshTokenDomain } from '../../../../core/domain';
 import { RefreshTokenEntity } from '../../entities';
 
 @Injectable()
@@ -22,7 +22,7 @@ export class GetRefreshTokenRepository implements IGetRefreshTokenRepository {
     return this.refreshTokenRepository.findOneBy({
       userId: dto.userId,
       token: dto.token,
-      expiresAt: LessThan(Date.now() / 1000),
+      expiresAt: MoreThan(Math.floor(Date.now() / 1000)),
     });
   }
 }

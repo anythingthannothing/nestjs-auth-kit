@@ -9,8 +9,7 @@ import { Reflector } from '@nestjs/core';
 import { Request } from 'express';
 
 import { IJwtTokenProvider } from '../../../core';
-import { authConst } from '../../shared';
-import { checkIsApp } from '../../shared/lib/utils/check-is-app';
+import { authConst, checkIsApp } from '../../shared';
 import { PlatformType } from '../../shared/types';
 import { JwtTokenProvider } from '../providers';
 

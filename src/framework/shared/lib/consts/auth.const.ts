@@ -3,5 +3,6 @@ export const authConst = {
   IS_PUBLIC_KEY: 'is-public',
   X_PLATFORM_KEY: 'x-platform',
   AUTHORIZATION_KEY: 'Authorization',
+  ACCESS_TOKEN_KEY: 'accessToken',
   REFRESH_TOKEN_KEY: 'RefreshToken',
 };
