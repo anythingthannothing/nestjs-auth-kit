@@ -22,6 +22,7 @@ import {
   GoogleLoginController,
   LoginController,
   LogoutController,
+  RefreshTokenController,
   SignUpController,
 } from './controllers';
 import { AccessTokenGuard } from './guards';
@@ -31,7 +32,6 @@ import {
   RefreshTokenProvider,
 } from './providers';
 import { GoogleLoginService, LoginService, SignUpService } from './services';
-import { RefreshTokenController } from './controllers/refresh-token/refresh-token.controller';
 
 const controllers = [
   LoginController,

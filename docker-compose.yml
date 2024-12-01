@@ -15,3 +15,13 @@ services:
       MYSQL_DATABASE: "${MYSQL_DATABASE}"
     networks:
       - nestjs-auth-kit
+
+  test-db:
+    image: mysql
+    ports:
+      - "43306:3306"
+    environment:
+      MYSQL_USER: "nestjs-auth-kit"
+      MYSQL_PASSWORD: "nestjs-auth-kit"
+      MYSQL_ROOT_PASSWORD: "testdbpassword"
+      MYSQL_DATABASE: "nestjs-auth-kit-test"
