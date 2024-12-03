@@ -7,6 +7,6 @@ export const dataSource = new DataSource({
   username: 'root',
   password: 'testdbpassword',
   database: 'nestjs-auth-kit-test',
-  synchronize: true,
-  entities: ['dist/src/infra/mysql/entities/**/*.entity.js'],
+  synchronize: false,
+  entities: ['test-dist/src/infra/mysql/entities/**/*.entity.js'],
 });

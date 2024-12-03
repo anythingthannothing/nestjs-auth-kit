@@ -1,9 +1,7 @@
-networks:
-  nestjs-auth-kit-test:
-
 services:
   test-db:
     image: mysql
+    container_name: nestjs-auth-kit-test-db
     ports:
       - "43306:3306"
     environment:
@@ -11,5 +9,3 @@ services:
       MYSQL_PASSWORD: "nestjs-auth-kit"
       MYSQL_ROOT_PASSWORD: "testdbpassword"
       MYSQL_DATABASE: "nestjs-auth-kit-test"
-    networks:
-      - nestjs-auth-kit-test
