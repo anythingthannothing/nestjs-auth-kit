@@ -1,8 +1,9 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { createNamespace, getNamespace } from 'cls-hooked';
 import { DataSource, EntityManager, QueryRunner } from 'typeorm';
 
+import { throwDatabaseErrorException } from '../exceptions/500/throw-database-error-exception';
 import { namespaceKeyConst } from '../lib/consts/namespaceKeys.const';
 
 createNamespace(namespaceKeyConst.ENTITY_MANAGER);
@@ -15,9 +16,9 @@ export class UnitOfWorkProvider {
     const namespace = getNamespace(namespaceKeyConst.ENTITY_MANAGER);
 
     if (!namespace) {
-      throw new InternalServerErrorException(
-        `Unable to commit: ${namespaceKeyConst.ENTITY_MANAGER}`,
-      );
+      return throwDatabaseErrorException({
+        cause: `Unable to commit: ${namespaceKeyConst.ENTITY_MANAGER}`,
+      });
     }
 
     const entityManager = this.dataSource.createEntityManager();
@@ -41,9 +42,9 @@ export class UnitOfWorkProvider {
     const namespace = getNamespace(namespaceKeyConst.ENTITY_MANAGER);
 
     if (!namespace) {
-      throw new InternalServerErrorException(
-        `Unable to rollback: ${namespaceKeyConst.ENTITY_MANAGER}`,
-      );
+      return throwDatabaseErrorException({
+        cause: `Unable to commit: ${namespaceKeyConst.ENTITY_MANAGER}`,
+      });
     }
 
     const queryRunner: QueryRunner = this.dataSource.createQueryRunner();

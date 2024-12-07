@@ -12,8 +12,8 @@ import { createAssert } from 'typia';
 
 import { googleOauthEnv } from '../../app-config/envs';
 import { authConst } from '../../shared';
-import { checkIsApp } from '../../shared/lib/utils/check-is-app';
-import { PlatformType } from '../../shared/types';
+import { checkIsApp } from '../../shared';
+import { PlatformType } from '../../shared/lib/platform-type';
 import { IGoogleLoginReqDto } from '../controllers';
 import { oauthConst } from '../lib';
 

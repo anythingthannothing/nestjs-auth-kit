@@ -8,7 +8,7 @@ import { Request } from 'express';
 
 import { IJwtTokenProvider, IRefreshTokenProvider } from '../../../core';
 import { authConst, checkIsApp } from '../../shared';
-import { PlatformType } from '../../shared/types';
+import { PlatformType } from '../../shared/lib/platform-type';
 import {
   JwtPayload,
   JwtTokenProvider,

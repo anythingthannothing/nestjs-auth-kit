@@ -14,11 +14,12 @@
     "skipLibCheck": true,
     "strictNullChecks": true,
     "strictPropertyInitialization": false,
-    "noImplicitAny": false,
+    "noImplicitAny": true,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "strict": true,
+    "typeRoots": ["src/framework/shared/types"],
     "plugins": [
       {
         "transform": "@nestia/core/lib/transform",

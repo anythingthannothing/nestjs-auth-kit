@@ -5,4 +5,4 @@ export const authConst = {
   AUTHORIZATION_KEY: 'Authorization',
   ACCESS_TOKEN_KEY: 'accessToken',
   REFRESH_TOKEN_KEY: 'RefreshToken',
-};
+} as const;

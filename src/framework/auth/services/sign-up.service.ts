@@ -12,7 +12,11 @@ import {
   CheckDuplicateAccountByEmailRepository,
   CreateAccountRepository,
 } from '../../../infra/mysql';
-import { UnitOfWorkProvider } from '../../shared';
+import {
+  ExceptionCode,
+  throwConflictException,
+  UnitOfWorkProvider,
+} from '../../shared';
 import { HashProvider } from '../providers';
 
 @Injectable()
@@ -30,7 +34,15 @@ export class SignUpService implements ISignUpService {
   public async execute(dto: SignUpServiceInput): Promise<UserDomain> {
     const { email, password } = dto;
 
-    await this.checkDuplicateAccountByEmailRepository.execute(email);
+    const isDuplicate =
+      await this.checkDuplicateAccountByEmailRepository.execute(email);
+
+    if (isDuplicate) {
+      throwConflictException(
+        'This email is already registered. How about trying a different one?',
+        ExceptionCode.DUPLICATE_EMAIL,
+      );
+    }
 
     const hashedPassword = await this.hashProvider.hash(password);
 

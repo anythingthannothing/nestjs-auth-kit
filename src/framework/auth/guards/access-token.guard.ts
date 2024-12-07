@@ -3,14 +3,18 @@ import {
   ExecutionContext,
   Inject,
   Injectable,
-  UnauthorizedException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Request } from 'express';
 
 import { IJwtTokenProvider } from '../../../core';
-import { authConst, checkIsApp } from '../../shared';
-import { PlatformType } from '../../shared/types';
+import {
+  authConst,
+  checkIsApp,
+  ExceptionCode,
+  throwUnauthenticatedException,
+} from '../../shared';
+import { PlatformType } from '../../shared/lib/platform-type';
 import { JwtTokenProvider } from '../providers';
 
 @Injectable()
@@ -39,7 +43,10 @@ export class AccessTokenGuard implements CanActivate {
       : request.cookies[authConst.AUTHORIZATION_KEY];
 
     if (!token) {
-      throw new UnauthorizedException();
+      throwUnauthenticatedException(
+        'Session expired. Please login again.',
+        ExceptionCode.NO_TOKEN,
+      );
     }
 
     try {

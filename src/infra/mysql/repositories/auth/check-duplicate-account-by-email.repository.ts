@@ -1,4 +1,4 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -15,12 +15,6 @@ export class CheckDuplicateAccountByEmailRepository
   ) {}
 
   public async execute(email: string): Promise<boolean> {
-    const duplicate = await this.accountRepository.existsBy({ email });
-
-    if (duplicate) {
-      throw new ConflictException();
-    }
-
-    return false;
+    return this.accountRepository.existsBy({ email });
   }
 }

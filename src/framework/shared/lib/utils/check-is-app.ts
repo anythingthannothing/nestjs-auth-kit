@@ -1,4 +1,4 @@
-import { PlatformType } from '../../types';
+import { PlatformType } from '../platform-type';
 
 const validPlatforms = new Set<PlatformType>(['web', 'ios', 'android']);
 

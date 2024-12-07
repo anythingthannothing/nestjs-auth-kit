@@ -1,7 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
 import { IJwtTokenProvider } from '../../../core';
+import { ExceptionCode, throwUnauthenticatedException } from '../../shared';
 
 export interface JwtPayload {
   userId: number;
@@ -22,6 +23,7 @@ export class JwtTokenProvider implements IJwtTokenProvider {
   public async sign(payload: Partial<JwtPayload>): Promise<string> {
     return this.jwtService.sign(payload);
   }
+
   public async verify(token: string): Promise<JwtVerifyResult> {
     try {
       const payload = await this.jwtService.verifyAsync<JwtPayload>(token);
@@ -33,11 +35,15 @@ export class JwtTokenProvider implements IJwtTokenProvider {
       return { payload: null, isValid: false, error: 'invalid token' };
     }
   }
+
   public async decode<JwtPayload>(token: string): Promise<JwtPayload> {
     try {
       return this.jwtService.decode<JwtPayload>(token);
     } catch (_) {
-      throw new BadRequestException();
+      return throwUnauthenticatedException(
+        'Invalid token. Please login again.',
+        ExceptionCode.INVALID_TOKEN,
+      );
     }
   }
 }

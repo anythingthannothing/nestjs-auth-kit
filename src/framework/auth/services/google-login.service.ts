@@ -1,4 +1,4 @@
-import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 
 import {
   AccountDomain,
@@ -14,7 +14,11 @@ import {
   CreateOauthAccountRepository,
   GetOauthAccountByEmailRepository,
 } from '../../../infra/mysql';
-import { UnitOfWorkProvider } from '../../shared';
+import {
+  ExceptionCode,
+  throwBadRequestException,
+  UnitOfWorkProvider,
+} from '../../shared';
 
 @Injectable()
 export class GoogleLoginService implements IOauthLoginService {
@@ -33,7 +37,10 @@ export class GoogleLoginService implements IOauthLoginService {
     );
 
     if (account && account.oauthProviders.length === 0) {
-      throw new BadRequestException();
+      return throwBadRequestException(
+        'You already registered with email. Please login with a registered account.',
+        ExceptionCode.INVALID_GOOGLE_LOGIN_ERROR,
+      );
     }
 
     if (account) {
