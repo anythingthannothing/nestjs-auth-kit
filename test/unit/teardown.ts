@@ -1,6 +1,6 @@
 import { exec } from 'child_process';
 
-import { dataSource } from './data-source';
+import { dataSource } from '../e2e/data-source';
 
 const execPromise = (command: string): Promise<void> => {
   return new Promise((resolve, reject) => {

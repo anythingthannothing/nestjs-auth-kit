@@ -5,7 +5,7 @@ import {
   CreateAccountRepositoryInput,
   ICreateAccountRepository,
 } from '../../../../core';
-import { DbContextProvider } from '../../../../framework/shared/providers/db-context.provider';
+import { DbContextProvider } from '../../../../framework/shared';
 import { AccountEntity, PasswordEntity, UserEntity } from '../../entities';
 
 @Injectable()

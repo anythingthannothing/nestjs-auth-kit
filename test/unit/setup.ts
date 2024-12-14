@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
-import { dataSource } from './data-source';
+import { dataSource } from '../e2e/data-source';
 
 const setup = async () => {
   const distPath = path.join(__dirname, 'test-dist');

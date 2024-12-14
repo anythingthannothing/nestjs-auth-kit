@@ -3,7 +3,7 @@ import { InjectDataSource } from '@nestjs/typeorm';
 import { createNamespace, getNamespace } from 'cls-hooked';
 import { DataSource, EntityManager, QueryRunner } from 'typeorm';
 
-import { throwDatabaseErrorException } from '../exceptions/500/throw-database-error-exception';
+import { throwDatabaseErrorException } from '../exceptions';
 import { namespaceKeyConst } from '../lib/consts/namespaceKeys.const';
 
 createNamespace(namespaceKeyConst.ENTITY_MANAGER);
