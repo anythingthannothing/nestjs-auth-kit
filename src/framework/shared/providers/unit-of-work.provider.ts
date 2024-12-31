@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { createNamespace, getNamespace } from 'cls-hooked';
-import { DataSource, EntityManager, QueryRunner } from 'typeorm';
+import { DataSource, QueryRunner } from 'typeorm';
 
 import { throwDatabaseErrorException } from '../exceptions';
 import { namespaceKeyConst } from '../lib/consts/namespaceKeys.const';
@@ -21,18 +21,24 @@ export class UnitOfWorkProvider {
       });
     }
 
-    const entityManager = this.dataSource.createEntityManager();
+    const queryRunner: QueryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
 
     return new Promise<T>((resolve, reject) => {
       namespace.run(async () => {
         try {
-          await entityManager.transaction(async (em: EntityManager) => {
-            namespace.set(namespaceKeyConst.ENTITY_MANAGER, em);
-            const callbackResult = await callback();
-            resolve(callbackResult);
-          });
+          await queryRunner.startTransaction();
+          const em = queryRunner.manager;
+          namespace.set(namespaceKeyConst.ENTITY_MANAGER, em);
+
+          const result = await callback();
+          await queryRunner.commitTransaction();
+          resolve(result);
         } catch (error) {
+          await queryRunner.rollbackTransaction();
           reject(error);
+        } finally {
+          await queryRunner.release();
         }
       });
     });
@@ -57,8 +63,8 @@ export class UnitOfWorkProvider {
           const em = queryRunner.manager;
           namespace.set(namespaceKeyConst.ENTITY_MANAGER, em);
 
-          await queryRunner.rollbackTransaction();
           resolve(await callback());
+          await queryRunner.rollbackTransaction();
         } catch (error) {
           await queryRunner.rollbackTransaction();
           reject(error);
